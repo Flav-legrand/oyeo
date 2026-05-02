@@ -132,25 +132,38 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 22),
               const OyeSearchBar(),
               const SizedBox(height: 20),
-              Wrap(
-                alignment: WrapAlignment.start,
-                crossAxisAlignment: WrapCrossAlignment.start,
-                spacing: 12,
-                runSpacing: 12,
-                children: HomeData.tags
-                    .map(
-                      (tag) => Chip(
-                        backgroundColor: const Color(0xFF101826),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18),
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final itemWidth = constraints.maxWidth / 3;
+                  return Row(
+                    children: HomeData.tags.map((tag) {
+                      return SizedBox(
+                        width: itemWidth,
+                        child: Container(
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 10,
+                          ),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF101826),
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              tag,
+                              textAlign: TextAlign.center,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ),
                         ),
-                        label: Text(
-                          tag,
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    )
-                    .toList(),
+                      );
+                    }).toList(),
+                  );
+                },
               ),
               const SizedBox(height: 24),
               const Text(
@@ -177,10 +190,7 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 28),
-              _SectionHeader(
-                title: 'Offres du jour',
-                actionLabel: 'Voir tout',
-              ),
+              _SectionHeader(title: 'Offres du jour', actionLabel: 'Voir tout'),
               const SizedBox(height: 18),
               LayoutBuilder(
                 builder: (context, constraints) {
@@ -210,7 +220,10 @@ class HomePage extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 40),
-              _SectionHeader(title: 'Tendances du moment', actionLabel: 'Voir tout'),
+              _SectionHeader(
+                title: 'Tendances du moment',
+                actionLabel: 'Voir tout',
+              ),
               const SizedBox(height: 20),
               LayoutBuilder(
                 builder: (context, constraints) {
