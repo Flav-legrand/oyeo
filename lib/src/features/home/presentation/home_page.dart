@@ -178,7 +178,7 @@ class HomePage extends StatelessWidget {
               ),
               const SizedBox(height: 28),
               _SectionHeader(
-                title: 'Meilleures ventes',
+                title: 'Offres du jour',
                 actionLabel: 'Voir tout',
               ),
               const SizedBox(height: 18),
@@ -210,7 +210,7 @@ class HomePage extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 40),
-              _SectionHeader(title: 'Offres du jour', actionLabel: 'Voir tout'),
+              _SectionHeader(title: 'Tendances du moment', actionLabel: 'Voir tout'),
               const SizedBox(height: 20),
               LayoutBuilder(
                 builder: (context, constraints) {
