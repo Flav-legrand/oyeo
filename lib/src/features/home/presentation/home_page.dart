@@ -241,7 +241,7 @@ class HomePage extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       itemCount: trends.length,
-                      separatorBuilder: (_, __) => const SizedBox(width: 10),
+                      separatorBuilder: (_, _) => const SizedBox(width: 10),
                       itemBuilder: (context, index) {
                         final trend = trends[index];
                         return Container(
@@ -271,16 +271,11 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 20),
               LayoutBuilder(
                 builder: (context, constraints) {
-                  final crossAxisCount = constraints.maxWidth >= 900
-                      ? 4
-                      : constraints.maxWidth >= 700
-                      ? 3
-                      : 2;
-                  final childAspectRatio = constraints.maxWidth >= 700
-                      ? 0.82
-                      : 0.78;
+                  // Calculer le nombre de colonnes selon la largeur
+                  final crossAxisCount = constraints.maxWidth >= 700 ? 3 : 2;
+
                   return GridView.builder(
-                    primary: false,
+                    padding: const EdgeInsets.all(8),
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: HomeData.offersProducts.length,
@@ -288,11 +283,15 @@ class HomePage extends StatelessWidget {
                       crossAxisCount: crossAxisCount,
                       crossAxisSpacing: 12,
                       mainAxisSpacing: 12,
-                      childAspectRatio: childAspectRatio,
+                      childAspectRatio: 0.72,
                     ),
                     itemBuilder: (context, index) {
                       final item = HomeData.offersProducts[index];
-                      return ProductCard(product: item, offer: true);
+                      return ProductCard(
+                        product: item,
+                        compact: true,  // ✅ Mode compact activé
+                        offer: true,
+                      );
                     },
                   );
                 },
