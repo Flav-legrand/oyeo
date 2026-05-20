@@ -608,6 +608,16 @@ class _QuickAccessSectionState extends State<_QuickAccessSection> {
       ('Service', Icons.storefront_outlined),
     ];
 
+    // Liste des services (utilise _ServiceItem et _ServiceChip)
+    final serviceItems = [
+      _ServiceItem(label: 'Ménage', icon: Icons.cleaning_services),
+      _ServiceItem(label: 'Plomberie', icon: Icons.plumbing),
+      _ServiceItem(label: 'Électricité', icon: Icons.electrical_services),
+      _ServiceItem(label: 'Maçonnerie', icon: Icons.construction),
+      _ServiceItem(label: 'Livraison', icon: Icons.local_shipping),
+      _ServiceItem(label: 'Informatique', icon: Icons.computer),
+    ];
+
     // Items différents selon la sélection
     final itemsByCategory = {
       0: [ // AntiGaspi
@@ -664,20 +674,28 @@ class _QuickAccessSectionState extends State<_QuickAccessSection> {
       ],
       2: [ // Services
         _SecondaryAccessItem(
-          label: 'Nike',
-          imagePath: 'assets/images/nike_air_max.png',
+          label: 'Ménage',
+          imagePath: 'assets/images/Service.png',
         ),
         _SecondaryAccessItem(
-          label: 'Samsung',
-          imagePath: 'assets/images/samsung_a54.png',
+          label: 'Plomberie',
+          imagePath: 'assets/images/Service.png',
         ),
         _SecondaryAccessItem(
-          label: 'Ninja',
-          imagePath: 'assets/images/ninja_airfryer.png',
+          label: 'Électricité',
+          imagePath: 'assets/images/Service.png',
         ),
         _SecondaryAccessItem(
-          label: 'VacTech',
-          imagePath: 'assets/images/vactech_broom.png',
+          label: 'Maçonnerie',
+          imagePath: 'assets/images/Service.png',
+        ),
+        _SecondaryAccessItem(
+          label: 'Livraison',
+          imagePath: 'assets/images/Service.png',
+        ),
+        _SecondaryAccessItem(
+          label: 'Informatique',
+          imagePath: 'assets/images/Service.png',
         ),
       ],
     };
@@ -774,6 +792,19 @@ class _QuickAccessSectionState extends State<_QuickAccessSection> {
                 ),
               ),
             ),
+          ] else if (_selectedIndex == 2) ...[
+            // Afficher les services en grille 3 colonnes (comme l'image)
+            GridView.count(
+              crossAxisCount: 3,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              childAspectRatio: 1,
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              children: serviceItems.map((s) {
+                return _ServiceChip(label: s.label, icon: s.icon);
+              }).toList(),
+            ),
           ] else ...[
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -818,7 +849,49 @@ class _SecondaryAccessItem {
     this.timeLabel,
   });
 }
+class _ServiceItem {
+  final String label;
+  final IconData icon;
 
+  const _ServiceItem({
+    required this.label,
+    required this.icon,
+  });
+}
+class _ServiceChip extends StatelessWidget {
+  final String label;
+  final IconData icon;
+
+  const _ServiceChip({required this.label, required this.icon});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+      decoration: BoxDecoration(
+        color: const Color(0xFF161D31),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.white12, width: 0.5),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: const Color(0xFFF95F00), size: 28),
+          const SizedBox(height: 8),
+          Text(
+            label,
+            style: const TextStyle(
+              color: Colors.white70,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+}
 class _PrimaryAccessChip extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -896,7 +969,7 @@ class _SuperMarketCategoryCard extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Colors.transparent, Colors.black.withOpacity(0.7)],
+                  colors: [Colors.transparent, Colors.black.withValues(alpha: 0.7)],
                 ),
               ),
             ),
@@ -1064,6 +1137,7 @@ class _SecondaryAccessChip extends StatelessWidget {
       ),
     );
   }
+
 }
 
 
