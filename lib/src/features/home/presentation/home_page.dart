@@ -8,8 +8,15 @@ import 'widgets/product_card.dart';
 
 import 'package:test1/src/features/home/domain/product.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +25,22 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xFF0B1322),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'Accueil'),
+          BottomNavigationBarItem(icon: Icon(Icons.search_outlined), label: 'Catalogue'),
+          BottomNavigationBarItem(icon: Icon(Icons.shopping_bag_outlined), label: 'Panier'),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite_border), label: 'Favoris'),
+          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Compte'),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: (index) => setState(() => _selectedIndex = index),
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Color(0xFF0B1322),
+        selectedItemColor: Color(0xFFF95F00),
+        unselectedItemColor: Colors.white70,
+        showUnselectedLabels: true,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.fromLTRB(
@@ -276,6 +299,15 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 20),
               _QuickAccessSection(),
               const SizedBox(height: 40),
+              _PartnerOffersSection(),
+              const SizedBox(height: 40),
+              const SizedBox(height: 40),
+              const GoodDealsSection(),
+              const SizedBox(height: 24),
+              const _BestBrandsPromoCard(),
+              const SizedBox(height: 40),
+              const OccasionSection(),
+              const SizedBox(height: 24),
             ],
           ),
         ),
@@ -451,6 +483,7 @@ class _SectionHeader extends StatelessWidget {
     );
   }
 }
+
 // ============================================================
 // WIDGET : PAGEVIEW 2x2 POUR LES OFFRES (SCROLL HORIZONTAL)
 // ============================================================
@@ -476,7 +509,9 @@ class _PagedOffersGridState extends State<_PagedOffersGrid> {
       if (end <= HomeData.offersProducts.length) {
         _pages.add(HomeData.offersProducts.sublist(i, end));
       } else {
-        _pages.add(HomeData.offersProducts.sublist(i, HomeData.offersProducts.length));
+        _pages.add(
+          HomeData.offersProducts.sublist(i, HomeData.offersProducts.length),
+        );
       }
     }
 
@@ -620,7 +655,8 @@ class _QuickAccessSectionState extends State<_QuickAccessSection> {
 
     // Items différents selon la sélection
     final itemsByCategory = {
-      0: [ // AntiGaspi
+      0: [
+        // AntiGaspi
         _SecondaryAccessItem(
           label: 'Lot fruits & légumes',
           imagePath: 'assets/images/Antigaspi.png',
@@ -654,7 +690,8 @@ class _QuickAccessSectionState extends State<_QuickAccessSection> {
           timeLabel: 'Plus que 4',
         ),
       ],
-      1: [ // Supermarché
+      1: [
+        // Supermarché
         _SecondaryAccessItem(
           label: 'Salon',
           imagePath: 'assets/images/vos acces rapide.png',
@@ -672,7 +709,8 @@ class _QuickAccessSectionState extends State<_QuickAccessSection> {
           imagePath: 'assets/images/vos acces rapide.png',
         ),
       ],
-      2: [ // Services
+      2: [
+        // Services
         _SecondaryAccessItem(
           label: 'Ménage',
           imagePath: 'assets/images/Service.png',
@@ -700,7 +738,8 @@ class _QuickAccessSectionState extends State<_QuickAccessSection> {
       ],
     };
 
-    final secondaryItems = itemsByCategory[_selectedIndex] ?? itemsByCategory[0]!;
+    final secondaryItems =
+        itemsByCategory[_selectedIndex] ?? itemsByCategory[0]!;
 
     return Container(
       width: double.infinity,
@@ -812,7 +851,9 @@ class _QuickAccessSectionState extends State<_QuickAccessSection> {
                 children: List.generate(secondaryItems.length, (index) {
                   final item = secondaryItems[index];
                   return Padding(
-                    padding: EdgeInsets.only(right: index < secondaryItems.length - 1 ? 10 : 0),
+                    padding: EdgeInsets.only(
+                      right: index < secondaryItems.length - 1 ? 10 : 0,
+                    ),
                     child: _SecondaryAccessChip(
                       label: item.label,
                       imagePath: item.imagePath,
@@ -832,6 +873,429 @@ class _QuickAccessSectionState extends State<_QuickAccessSection> {
   }
 }
 
+class _PartnerOffersSection extends StatelessWidget {
+  const _PartnerOffersSection();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Offres partenaires',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        const SizedBox(height: 16),
+        // Offre 1
+        ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Container(
+            width: double.infinity,
+            height: 200,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              color: const Color(0xFF161D31),
+            ),
+            child: Image.asset(
+              'assets/images/Offre 1.png',
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                // Fallback : afficher un placeholder attrayant
+                return Container(
+                  width: double.infinity,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF2C3E50), Color(0xFF1A2A3A)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Text(
+                                'Hello, Neo.',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                              SizedBox(height: 12),
+                              Text(
+                                'MacBook Neo',
+                                style: TextStyle(
+                                  color: Colors.black87,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'En 1 fois',
+                                style: TextStyle(
+                                  color: Color(0xFF2563EB),
+                                  fontSize: 12,
+                                ),
+                              ),
+                              const Text(
+                                '699€',
+                                style: TextStyle(
+                                  color: Color(0xFF2563EB),
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              const Text(
+                                'En 4 fois',
+                                style: TextStyle(
+                                  color: Color(0xFF2563EB),
+                                  fontSize: 12,
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: const [
+                                  Text(
+                                    '179€',
+                                    style: TextStyle(
+                                      color: Color(0xFF2563EB),
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                  ),
+                                  Text(
+                                    '37',
+                                    style: TextStyle(
+                                      color: Color(0xFF2563EB),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+        // Offres 2 - Contenu scrollable
+        const Text(
+          'Deals du jour',
+          style: TextStyle(
+            color: Colors.white70,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 12),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Container(
+            height: 340,
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              color: const Color(0xFF161D31),
+            ),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  _DealProductCard(
+                    title: 'Poêle anti-adhésive',
+                    brand: 'CookPro',
+                    price: '\$18',
+                    originalPrice: '525',
+                    discount: '-28%',
+                    rating: 5,
+                    reviews: 210,
+                    icon: Icons.kitchen,
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  _DealProductCard(
+                    title: 'Casque BT Ultra',
+                    brand: 'SoundPro',
+                    price: '\$44',
+                    originalPrice: '574',
+                    discount: '-40%',
+                    rating: 4,
+                    reviews: 312,
+                    icon: Icons.headphones,
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  _DealProductCard(
+                    title: 'Montre Connectée',
+                    brand: 'TechWear',
+                    price: '\$35',
+                    originalPrice: '89',
+                    discount: '-50%',
+                    rating: 5,
+                    reviews: 145,
+                    icon: Icons.watch,
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  _DealProductCard(
+                    title: 'Powerbank 20W',
+                    brand: 'ChargePro',
+                    price: '\$22',
+                    originalPrice: '59',
+                    discount: '-35%',
+                    rating: 4,
+                    reviews: 287,
+                    icon: Icons.power,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _DealProductCard extends StatelessWidget {
+  final String brand;
+  final String title;
+  final String price;
+  final String originalPrice;
+  final String discount;
+  final int rating;
+  final int reviews;
+  final IconData icon;
+
+  const _DealProductCard({
+    required this.brand,
+    required this.title,
+    required this.price,
+    required this.originalPrice,
+    required this.discount,
+    required this.rating,
+    required this.reviews,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 160,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Header: Deal badge + Heart
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF5EEAD4),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Text(
+                    'Deal',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                Icon(Icons.favorite_border, color: Colors.grey[300], size: 16),
+              ],
+            ),
+            const SizedBox(height: 8),
+            // Product icon
+            Container(
+              width: 100,
+              height: 80,
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(icon, color: Colors.grey[400], size: 40),
+            ),
+            const SizedBox(height: 8),
+            // Discount badge
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+              decoration: BoxDecoration(
+                color: const Color(0xFFEF4444),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Text(
+                discount,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const SizedBox(height: 6),
+            // Brand
+            Text(
+              brand,
+              style: TextStyle(color: Colors.grey[600], fontSize: 11),
+            ),
+            // Title
+            Text(
+              title,
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 4),
+            // Rating
+            Row(
+              children: [
+                Row(
+                  children: List.generate(
+                    5,
+                    (i) => Icon(
+                      Icons.star,
+                      color: i < rating ? Colors.amber : Colors.grey[300],
+                      size: 11,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  '($reviews)',
+                  style: TextStyle(color: Colors.grey[600], fontSize: 9),
+                ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            // Price
+            Row(
+              children: [
+                Text(
+                  price,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  originalPrice,
+                  style: TextStyle(
+                    color: Colors.grey[400],
+                    fontSize: 10,
+                    decoration: TextDecoration.lineThrough,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            // Action buttons
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  child: TextButton(
+                    onPressed: () {},
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                      backgroundColor: const Color(0xFFEFF6FF),
+                    ),
+                    child: const Text(
+                      'Ajouter',
+                      style: TextStyle(
+                        color: Color(0xFF2563EB),
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFEC4899),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Text(
+                      'Acheter',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+
 class _SecondaryAccessItem {
   final String label;
   final String imagePath;
@@ -849,15 +1313,14 @@ class _SecondaryAccessItem {
     this.timeLabel,
   });
 }
+
 class _ServiceItem {
   final String label;
   final IconData icon;
 
-  const _ServiceItem({
-    required this.label,
-    required this.icon,
-  });
+  const _ServiceItem({required this.label, required this.icon});
 }
+
 class _ServiceChip extends StatelessWidget {
   final String label;
   final IconData icon;
@@ -892,6 +1355,7 @@ class _ServiceChip extends StatelessWidget {
     );
   }
 }
+
 class _PrimaryAccessChip extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -910,7 +1374,9 @@ class _PrimaryAccessChip extends StatelessWidget {
       decoration: BoxDecoration(
         color: isSelected ? const Color(0xFF1A1A1A) : const Color(0xFF1A2A3A),
         borderRadius: BorderRadius.circular(20),
-        border: isSelected ? null : Border.all(color: Colors.white12, width: 0.5),
+        border: isSelected
+            ? null
+            : Border.all(color: Colors.white12, width: 0.5),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -959,9 +1425,7 @@ class _SuperMarketCategoryCard extends StatelessWidget {
               imagePath,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  color: const Color(0xFF161D31),
-                );
+                return Container(color: const Color(0xFF161D31));
               },
             ),
             Container(
@@ -969,7 +1433,10 @@ class _SuperMarketCategoryCard extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Colors.transparent, Colors.black.withValues(alpha: 0.7)],
+                  colors: [
+                    Colors.transparent,
+                    Colors.black.withValues(alpha: 0.7),
+                  ],
                 ),
               ),
             ),
@@ -1017,9 +1484,7 @@ class _SecondaryAccessChip extends StatelessWidget {
       child: Container(
         width: 120,
         height: 150,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
         child: Stack(
           fit: StackFit.expand,
           children: [
@@ -1042,7 +1507,10 @@ class _SecondaryAccessChip extends StatelessWidget {
                 top: 8,
                 left: 8,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFF22C55E),
                     borderRadius: BorderRadius.circular(6),
@@ -1067,7 +1535,10 @@ class _SecondaryAccessChip extends StatelessWidget {
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [Colors.transparent, Colors.black.withValues(alpha: 0.8)],
+                    colors: [
+                      Colors.transparent,
+                      Colors.black.withValues(alpha: 0.8),
+                    ],
                   ),
                 ),
                 padding: const EdgeInsets.all(8),
@@ -1079,7 +1550,11 @@ class _SecondaryAccessChip extends StatelessWidget {
                     if (timeLabel != null)
                       Row(
                         children: [
-                          const Icon(Icons.history, color: Colors.white, size: 14),
+                          const Icon(
+                            Icons.history,
+                            color: Colors.white,
+                            size: 14,
+                          ),
                           const SizedBox(width: 4),
                           Text(
                             timeLabel!,
@@ -1137,7 +1612,496 @@ class _SecondaryAccessChip extends StatelessWidget {
       ),
     );
   }
-
 }
 
+class _BestBrandsPromoCard extends StatelessWidget {
+  const _BestBrandsPromoCard();
 
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(28),
+        color: const Color(0xFF1A2A3A),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'DÉCOUVREZ LES MEILLEURES\nMARQUES',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 0.5,
+                    height: 1.3,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  'Des produits de qualité à prix réduits',
+                  style: TextStyle(color: Colors.white70, fontSize: 12),
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: const Color(0xFF0B1322),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 12,
+                    ),
+                  ),
+                  child: const Text(
+                    'Découvrir',
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 20),
+          Container(
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFF8B4969), Color(0xFF5C2E4A)],
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+              ),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            child: const Text(
+              '50%',
+              style: TextStyle(
+                color: Color(0xFFD18BA8),
+                fontSize: 48,
+                fontWeight: FontWeight.w900,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+// -----------------------------
+// SECTION : Les bonnes affaires
+// -----------------------------
+class GoodDealsSection extends StatelessWidget {
+  const GoodDealsSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // On prend 4 produits pour la grille (2x2)
+    final deals = HomeData.offersProducts.take(4).toList();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "Les bonnes affaires de la semaine",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        const SizedBox(height: 12),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Container(
+            color: const Color(0xFF0F1724),
+            padding: const EdgeInsets.all(12),
+            child: GridView.count(
+              crossAxisCount: 2,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              childAspectRatio: 0.78,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: deals.map((p) => _GoodDealCard(product: p)).toList(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+class _GoodDealCard extends StatelessWidget {
+  final Product product;
+
+  const _GoodDealCard({required this.product});
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(14),
+      child: Container(
+        decoration: BoxDecoration(
+          color: const Color(0xFF1A2230),
+          borderRadius: BorderRadius.circular(14),
+        ),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            // Image produit (si disponible)
+            if (product.imageAsset.isNotEmpty)
+              Image.asset(
+                product.imageAsset,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(color: const Color(0xFF1A2230));
+                },
+              )
+            else
+              Container(color: const Color(0xFF1A2230)),
+            // Overlay dégradé bas
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: 90,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Colors.transparent, Colors.black.withOpacity(0.75)],
+                  ),
+                ),
+              ),
+            ),
+            // Badge "En ligne" en haut à gauche
+            Positioned(
+              top: 10,
+              left: 10,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: const Text(
+                  'En ligne',
+                  style: TextStyle(
+                    color: Color(0xFF0B1322),
+                    fontWeight: FontWeight.w700,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ),
+            // Badge de remise (si présente)
+            if (product.discount != null)
+              Positioned(
+                top: 10,
+                right: 10,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFF3B30),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    product.discount!,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ),
+            // Texte bas : titre, état et prix
+            Positioned(
+              left: 10,
+              right: 10,
+              bottom: 10,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Small category / état
+                  Text(
+                    product.category,
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 12,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 6),
+                  // Nom / titre
+                  Text(
+                    product.name,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 13,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 6),
+                  // Prix (mise en avant)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        product.price,
+                        style: const TextStyle(
+                          color: Color(0xFF22C55E),
+                          fontWeight: FontWeight.w900,
+                          fontSize: 16,
+                        ),
+                      ),
+                      // petit badge "Voir" ou icone
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: Colors.white24,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(Icons.chevron_right, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class OccasionSection extends StatelessWidget {
+  const OccasionSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // Utilisez HomeData.secondHandProducts si vous l'avez ajouté,
+    // sinon basculez sur une autre source, ex: HomeData.featuredProducts.take(2)
+    final items = HomeData.secondHandProducts;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Header: titre + "Voir tout"
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text(
+                  'Occasions',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  'Seconde main · Reconditionnés',
+                  style: TextStyle(color: Colors.white70, fontSize: 12),
+                ),
+              ],
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text(
+                'Voir tout ›',
+                style: TextStyle(color: Color(0xFFF95F00)),
+              ),
+            ),
+          ],
+        ),
+
+        const SizedBox(height: 12),
+
+        // Filtre chips (Tous, Comme neuf, Bon état, Reconditionné)
+        SizedBox(
+          height: 40,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
+              _FilterChip(label: 'Tous', selected: true),
+              const SizedBox(width: 8),
+              _FilterChip(label: 'Comme neuf'),
+              const SizedBox(width: 8),
+              _FilterChip(label: 'Bon état'),
+              const SizedBox(width: 8),
+              _FilterChip(label: 'Reconditionné'),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 12),
+
+        // Liste horizontale de cartes
+        SizedBox(
+          height: 240,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: items.length,
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            separatorBuilder: (_, __) => const SizedBox(width: 12),
+            itemBuilder: (context, index) {
+              final p = items[index];
+              return SizedBox(
+                width: 200,
+                child: _OccasionCard(product: p),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _FilterChip extends StatelessWidget {
+  final String label;
+  final bool selected;
+
+  const _FilterChip({required this.label, this.selected = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: selected ? const Color(0xFFF95F00) : const Color(0xFF161D31),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.white12),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: selected ? Colors.white : Colors.white70,
+          fontWeight: selected ? FontWeight.w700 : FontWeight.w600,
+        ),
+      ),
+    );
+  }
+}
+
+class _OccasionCard extends StatelessWidget {
+  final Product product;
+
+  const _OccasionCard({required this.product});
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.12),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Image + badge orange 'Occasion'
+            Expanded(
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  if (product.imageAsset.isNotEmpty)
+                    Image.asset(
+                      product.imageAsset,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          Container(color: const Color(0xFFF4F6F8)),
+                    )
+                  else
+                    Container(color: const Color(0xFFF4F6F8)),
+                  Positioned(
+                    top: 8,
+                    left: 8,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFA726), // orange badge
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Text(
+                        'Occasion',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Bas blanc: titre, état, prix
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    product.name,
+                    style: const TextStyle(
+                      color: Color(0xFF0B1322),
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    children: [
+                      const Icon(Icons.check_circle, color: Color(0xFF22C55E), size: 14),
+                      const SizedBox(width: 6),
+                      Text(
+                        product.category,
+                        style: const TextStyle(color: Colors.black54, fontSize: 12),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    product.price,
+                    style: const TextStyle(
+                      color: Color(0xFF2563EB),
+                      fontWeight: FontWeight.w900,
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

@@ -1,0 +1,88 @@
+<svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <defs>
+    <linearGradient id="cardBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0f0f0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e0e0e0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="300" fill="url(#cardBg)" rx="24"/>
+
+  <!-- Card 1 -->
+  <g transform="translate(40, 30)">
+    <!-- Deal badge -->
+    <rect x="0" y="0" width="60" height="28" fill="#5EEAD4" rx="6"/>
+    <text x="30" y="20" font-family="Arial, sans-serif" font-size="12" font-weight="600" fill="#000" text-anchor="middle">Deal</text>
+
+    <!-- Heart icon -->
+    <circle cx="210" cy="14" r="8" fill="none" stroke="#ccc" stroke-width="1.5"/>
+
+    <!-- Product icon placeholder -->
+    <rect x="20" y="40" width="166" height="80" fill="#f9f9f9" rx="4" stroke="#ddd" stroke-width="1"/>
+    <circle cx="103" cy="80" r="20" fill="#9333ea" opacity="0.3"/>
+
+    <!-- Discount badge -->
+    <rect x="20" y="130" width="50" height="24" fill="#EF4444" rx="4"/>
+    <text x="45" y="148" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#fff" text-anchor="middle">-28%</text>
+
+    <!-- Brand name -->
+    <text x="20" y="170" font-family="Arial, sans-serif" font-size="11" fill="#888">CookPro</text>
+
+    <!-- Product title -->
+    <text x="20" y="190" font-family="Arial, sans-serif" font-size="12" font-weight="600" fill="#333">Poêle anti-adhésive</text>
+
+    <!-- Stars -->
+    <text x="20" y="210" font-family="Arial, sans-serif" font-size="10" fill="#FFA500">★★★★★ (210)</text>
+
+    <!-- Price -->
+    <text x="20" y="235" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">$18 </text>
+    <text x="70" y="235" font-family="Arial, sans-serif" font-size="12" fill="#999" text-decoration="line-through">525</text>
+
+    <!-- Buttons -->
+    <rect x="20" y="250" width="75" height="28" fill="none" stroke="#2563EB" stroke-width="1.5" rx="6"/>
+    <text x="57.5" y="270" font-family="Arial, sans-serif" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">Ajouter</text>
+
+    <rect x="103" y="250" width="83" height="28" fill="#EC4899" rx="6"/>
+    <text x="144.5" y="270" font-family="Arial, sans-serif" font-size="11" font-weight="600" fill="#fff" text-anchor="middle">Acheter</text>
+  </g>
+
+  <!-- Card 2 -->
+  <g transform="translate(380, 30)">
+    <!-- Deal badge -->
+    <rect x="0" y="0" width="60" height="28" fill="#5EEAD4" rx="6"/>
+    <text x="30" y="20" font-family="Arial, sans-serif" font-size="12" font-weight="600" fill="#000" text-anchor="middle">Deal</text>
+
+    <!-- Heart icon -->
+    <circle cx="210" cy="14" r="8" fill="none" stroke="#ccc" stroke-width="1.5"/>
+
+    <!-- Product icon placeholder -->
+    <rect x="20" y="40" width="166" height="80" fill="#f9f9f9" rx="4" stroke="#ddd" stroke-width="1"/>
+    <circle cx="103" cy="70" r="15" fill="#999" opacity="0.3"/>
+    <circle cx="103" cy="100" r="8" fill="#999" opacity="0.2"/>
+
+    <!-- Discount badge -->
+    <rect x="20" y="130" width="50" height="24" fill="#EF4444" rx="4"/>
+    <text x="45" y="148" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#fff" text-anchor="middle">-40%</text>
+
+    <!-- Brand name -->
+    <text x="20" y="170" font-family="Arial, sans-serif" font-size="11" fill="#888">SoundPro</text>
+
+    <!-- Product title -->
+    <text x="20" y="190" font-family="Arial, sans-serif" font-size="12" font-weight="600" fill="#333">Casque BT Ultra</text>
+
+    <!-- Stars -->
+    <text x="20" y="210" font-family="Arial, sans-serif" font-size="10" fill="#FFA500">★★★★☆ (312)</text>
+
+    <!-- Price -->
+    <text x="20" y="235" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">$44 </text>
+    <text x="70" y="235" font-family="Arial, sans-serif" font-size="12" fill="#999" text-decoration="line-through">574</text>
+
+    <!-- Buttons -->
+    <rect x="20" y="250" width="75" height="28" fill="none" stroke="#2563EB" stroke-width="1.5" rx="6"/>
+    <text x="57.5" y="270" font-family="Arial, sans-serif" font-size="11" font-weight="600" fill="#2563EB" text-anchor="middle">Ajouter</text>
+
+    <rect x="103" y="250" width="83" height="28" fill="#EC4899" rx="6"/>
+    <text x="144.5" y="270" font-family="Arial, sans-serif" font-size="11" font-weight="600" fill="#fff" text-anchor="middle">Acheter</text>
+  </g>
+</svg>
