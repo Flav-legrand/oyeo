@@ -14,8 +14,8 @@ flutter build web --release --base-href "/Oyeo_Mobi/"
 
 # Copie vers le dépôt GitHub Pages
 echo "📁 Copie des fichiers..."
-rm -rf ../Oyeo_Mobi/*
-cp -r build/web/* ../Oyeo_Mobi/
+rm -rf ../test1-Android/*
+cp -r build/web/* ../test1-Android/
 
 # Commit et push
 echo "📤 Push vers GitHub..."
