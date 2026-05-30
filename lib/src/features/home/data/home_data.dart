@@ -160,22 +160,38 @@ class HomeData {
   ];
 
   static final secondHandProducts = <Product>[
-  Product(
-    name: 'iPhone 12 Pro',
-    category: 'Comme neuf',
-    price: '350 000 F',
-    badge: 'Occasion',
-    rating: '4,6/5',
-    imageAsset: 'assets/images/oyeo2.png', // remplacez par votre image
-  ),
-  Product(
-    name: 'Samsung TV 55"',
-    category: 'Bon état',
-    price: '280 000 F',
-    badge: 'Occasion',
-    rating: '4,4/5',
-    imageAsset: 'assets/images/oyeo.png', // remplacez par votre image
-  ),
+    Product(
+      name: 'iPhone 12 Pro',
+      category: 'Comme neuf',
+      price: '350 000 F',
+      badge: 'Occasion',
+      rating: '4,6/5',
+      imageAsset: 'assets/images/oyeo.png', // remplacez par votre image
+    ),
+    Product(
+      name: 'Samsung TV 55"',
+      category: 'Bon état',
+      price: '280 000 F',
+      badge: 'Occasion',
+      rating: '4,4/5',
+      imageAsset: 'assets/images/oyeo.png', // remplacez par votre image
+    ),
+    Product(
+      name: 'iPhone 12 Pro',
+      category: 'Comme neuf',
+      price: '350 000 F',
+      badge: 'Occasion',
+      rating: '4,6/5',
+      imageAsset: 'assets/images/oyeo.png', // remplacez par votre image
+    ),
+    Product(
+      name: 'Samsung TV 55"',
+      category: 'Bon état',
+      price: '280 000 F',
+      badge: 'Occasion',
+      rating: '4,4/5',
+      imageAsset: 'assets/images/oyeo.png', // remplacez par votre image
+    ),
   // Ajoutez d'autres éléments si besoin
 ];
 }
