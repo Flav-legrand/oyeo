@@ -1070,6 +1070,15 @@ class _PartnerOffersSection extends StatelessWidget {
                                   ),
                                 ],
                               ),
+                              Text(
+                                'Voir plus',
+                                style: TextStyle(
+                                  color: Color(0xFF2563EB),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  decoration: TextDecoration.underline, // Optionnel : souligner
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -1084,7 +1093,7 @@ class _PartnerOffersSection extends StatelessWidget {
         const SizedBox(height: 16),
         // Offres 2 - Contenu scrollable
         const Text(
-          'Deals du jour',
+          '',
           style: TextStyle(
             color: Colors.white70,
             fontSize: 14,
@@ -1159,6 +1168,160 @@ class _PartnerOffersSection extends StatelessWidget {
             ),
           ),
         ),
+        const Text(
+          'Mon bien etre',
+          style: TextStyle(
+            color: Colors.white70,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 12),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Container(
+            height: 340,
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              color: const Color(0xFF161D31),
+            ),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  _DealProductCard(
+                    title: 'Poêle anti-adhésive',
+                    brand: 'CookPro',
+                    price: '\$18',
+                    originalPrice: '525',
+                    discount: '-28%',
+                    rating: 5,
+                    reviews: 210,
+                    icon: Icons.kitchen,
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  _DealProductCard(
+                    title: 'Casque BT Ultra',
+                    brand: 'SoundPro',
+                    price: '\$44',
+                    originalPrice: '574',
+                    discount: '-40%',
+                    rating: 4,
+                    reviews: 312,
+                    icon: Icons.headphones,
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  _DealProductCard(
+                    title: 'Montre Connectée',
+                    brand: 'TechWear',
+                    price: '\$35',
+                    originalPrice: '89',
+                    discount: '-50%',
+                    rating: 5,
+                    reviews: 145,
+                    icon: Icons.watch,
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  _DealProductCard(
+                    title: 'Powerbank 20W',
+                    brand: 'ChargePro',
+                    price: '\$22',
+                    originalPrice: '59',
+                    discount: '-35%',
+                    rating: 4,
+                    reviews: 287,
+                    icon: Icons.power,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+
+        const Text(
+          'Mon bien etre',
+          style: TextStyle(
+            color: Colors.white70,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 12),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Container(
+            height: 340,
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              color: const Color(0xFF161D31),
+            ),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  _DealProductCard(
+                    title: 'Poêle anti-adhésive',
+                    brand: 'CookPro',
+                    price: '\$18',
+                    originalPrice: '525',
+                    discount: '-28%',
+                    rating: 5,
+                    reviews: 210,
+                    icon: Icons.kitchen,
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  _DealProductCard(
+                    title: 'Casque BT Ultra',
+                    brand: 'SoundPro',
+                    price: '\$44',
+                    originalPrice: '574',
+                    discount: '-40%',
+                    rating: 4,
+                    reviews: 312,
+                    icon: Icons.headphones,
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  _DealProductCard(
+                    title: 'Montre Connectée',
+                    brand: 'TechWear',
+                    price: '\$35',
+                    originalPrice: '89',
+                    discount: '-50%',
+                    rating: 5,
+                    reviews: 145,
+                    icon: Icons.watch,
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  _DealProductCard(
+                    title: 'Powerbank 20W',
+                    brand: 'ChargePro',
+                    price: '\$22',
+                    originalPrice: '59',
+                    discount: '-35%',
+                    rating: 4,
+                    reviews: 287,
+                    icon: Icons.power,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+
       ],
     );
   }
