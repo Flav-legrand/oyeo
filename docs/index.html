@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <!--
@@ -14,7 +14,7 @@
     This is a placeholder for base href that will be replaced by the value of
     the `--base-href` argument provided to `flutter build`.
   -->
-  <base href="/">
+  
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
@@ -33,6 +33,16 @@
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
+    <script>
+        (function() {
+            var path = window.location.pathname;
+            if (path === '/' || path === '/Oyeo/') {
+                var base = document.createElement('base');
+                base.href = '/Oyeo/';
+                document.head.appendChild(base);
+            }
+        })();
+    </script>
   <!--
     You can customize the "flutter_bootstrap.js" script.
     This is useful to provide a custom configuration to the Flutter loader
@@ -44,3 +54,4 @@
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
+
