@@ -14,7 +14,6 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
-
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
@@ -53,13 +52,8 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 20),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: surface,
-                  borderRadius: BorderRadius.circular(28),
-                ),
+              ClipRRect(
+
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -109,10 +103,10 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         Row(
-                          children: [
-                            _ActionIcon(icon: Icons.favorite_border),
-                            const SizedBox(width: 8),
-                            _ActionIcon(icon: Icons.notifications_none),
+                          children: const [
+                            Icon(Icons.notifications_none, color: Colors.white, size: 22),
+                            SizedBox(width: 12),
+                            Icon(Icons.favorite_border, color: Colors.white, size: 22),
                           ],
                         ),
                       ],
@@ -120,10 +114,11 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(height: 20),
                     Row(
                       children: [
-                        _LabelChip(
-                          icon: Icons.location_on_outlined,
-                          label: 'Brazzaville',
-                          backgroundColor: const Color(0xFF161D31),
+                        const Icon(Icons.location_on_outlined, size: 16, color: Colors.white70),
+                        const SizedBox(width: 6),
+                        const Text(
+                          'Brazzaville',
+                          style: TextStyle(color: Colors.white70, fontSize: 12),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
@@ -136,19 +131,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         const SizedBox(width: 10),
-                        Row(
-                          children: const [
-                            Icon(Icons.star, color: Colors.yellow, size: 18),
-                            SizedBox(width: 6),
-                            Text(
-                              '120 pts',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
+
                       ],
                     ),
                   ],
@@ -165,6 +148,7 @@ class _HomePageState extends State<HomePage> {
                       return SizedBox(
                         width: itemWidth,
                         child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 4),
                           alignment: Alignment.center,
                           padding: const EdgeInsets.symmetric(
                             horizontal: 10,

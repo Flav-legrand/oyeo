@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../domain/product.dart';
 
 class CategoryItem {
-  final IconData icon;
+
   final String label;
 
-  const CategoryItem({required this.icon, required this.label});
+  const CategoryItem({required this.label});
 }
 
 class HomeData {
@@ -17,12 +17,12 @@ class HomeData {
   ];
 
   static const categories = <CategoryItem>[
-    CategoryItem(icon: Icons.phone_iphone, label: 'Électronique'),
-    CategoryItem(icon: Icons.checkroom, label: 'Mode'),
-    CategoryItem(icon: Icons.home, label: 'Maison'),
-    CategoryItem(icon: Icons.kitchen, label: 'Cuisine'),
-    CategoryItem(icon: Icons.brush, label: 'Beauté'),
-    CategoryItem(icon: Icons.menu_book, label: 'Livres'),
+    CategoryItem(label: 'Électronique'),
+    CategoryItem( label: 'Mode'),
+    CategoryItem( label: 'Maison'),
+    CategoryItem( label: 'Cuisine'),
+    CategoryItem( label: 'Beauté'),
+    CategoryItem( label: 'Livres'),
   ];
 
   static final featuredProducts = <Product>[

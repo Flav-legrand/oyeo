@@ -36,19 +36,7 @@ class CategoryList extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        width: 44,
-                        height: 44,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF151D2B),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Icon(
-                          category.icon,
-                          color: Colors.white,
-                          size: 24,
-                        ),
-                      ),
+
                       const SizedBox(height: 14),
                       Text(
                         category.label,
