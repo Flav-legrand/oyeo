@@ -1,0 +1,1 @@
+cd "C:\Users\Utilisateur\test1 - Android\Oyeo_Mobi" ; ((Get-Content lib/src/features/home/presentation/home_page.dart) -replace 'Color\(0xFF101826\)', 'Color(0xFFF5F5F5)') | Set-Content lib/src/features/home/presentation/home_page.dart

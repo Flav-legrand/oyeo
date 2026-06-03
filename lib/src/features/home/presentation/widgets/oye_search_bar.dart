@@ -10,19 +10,20 @@ class OyeSearchBar extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       decoration: BoxDecoration(
-        color: const Color(0xFF101826),
+        color: const Color(0xFFF5F5F5),
         borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: const Color(0xFFE0E0E0), width: 1),
       ),
       child: Row(
         children: [
-          const Icon(Icons.search, color: Colors.white54),
+          const Icon(Icons.search, color: Colors.grey),
           const SizedBox(width: 12),
           Expanded(
             child: TextField(
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.black87),
               decoration: const InputDecoration(
                 hintText: searchHint,
-                hintStyle: TextStyle(color: Colors.white38),
+                hintStyle: TextStyle(color: Colors.grey),
                 border: InputBorder.none,
               ),
             ),
@@ -30,13 +31,14 @@ class OyeSearchBar extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.white12),
+              border: Border.all(color: Colors.grey.shade300),
               borderRadius: BorderRadius.circular(14),
+              color: Colors.white,
             ),
             child: const Text(
               'Ctrl K',
               style: TextStyle(
-                color: Colors.white54,
+                color: Colors.grey,
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
               ),

@@ -19,11 +19,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final surface = const Color(0xFF101826);
+    final surface = const Color(0xFFF5F5F5);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color(0xFF0B1322),
+      backgroundColor: const Color(0xFFFFFFFF),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'Accueil'),
@@ -35,25 +35,20 @@ class _HomePageState extends State<HomePage> {
         currentIndex: _selectedIndex,
         onTap: (index) => setState(() => _selectedIndex = index),
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Color(0xFF0B1322),
+        backgroundColor: Color(0xFFFFFFFF),
         selectedItemColor: Color(0xFFF95F00),
-        unselectedItemColor: Colors.white70,
+        unselectedItemColor: Colors.grey,
         showUnselectedLabels: true,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(
-            16,
-            20,
-            16,
-            20 + MediaQuery.of(context).viewInsets.bottom,
-          ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-              ClipRRect(
-
+              // Section sombre - Header (scrollable)
+              Container(
+                width: double.infinity,
+                color: const Color(0xFF1A2A3A),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -131,15 +126,26 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         const SizedBox(width: 10),
-
                       ],
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 22),
-              const OyeSearchBar(),
-              const SizedBox(height: 20),
+              // Section blanche - Contenu scrollable
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                  16,
+                  20,
+                  16,
+                  20 + MediaQuery.of(context).viewInsets.bottom,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const OyeSearchBar(),
+                    const SizedBox(height: 20),
+
+
               LayoutBuilder(
                 builder: (context, constraints) {
                   final itemWidth = constraints.maxWidth / 3;
@@ -147,42 +153,43 @@ class _HomePageState extends State<HomePage> {
                     children: HomeData.tags.map((tag) {
                       return SizedBox(
                         width: itemWidth,
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 4),
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 10,
-                          ),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF101826),
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                          child: FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Text(
-                              tag,
-                              textAlign: TextAlign.center,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
+               child: Container(
+                 margin: const EdgeInsets.symmetric(horizontal: 4),
+                 alignment: Alignment.center,
+                 padding: const EdgeInsets.symmetric(
+                   horizontal: 10,
+                   vertical: 10,
+                 ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(color: const Color(0xFFE0E0E0), width: 1),
+                  ),
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      tag,
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(color: Colors.black),
+                    ),
+                  ),
+               ),
                       );
                     }).toList(),
                   );
                 },
               ),
               const SizedBox(height: 24),
-              const Text(
-                categoriesTitle,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
+               const Text(
+                 categoriesTitle,
+                 style: TextStyle(
+                   color: Colors.black,
+                   fontSize: 18,
+                   fontWeight: FontWeight.w700,
+                 ),
+               ),
               const SizedBox(height: 16),
               CategoryList(categories: HomeData.categories),
               const SizedBox(height: 24),
@@ -199,8 +206,8 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               const SizedBox(height: 28),
-              _SectionHeader(title: 'Offres du jour', actionLabel: 'Voir tout'),
-              const SizedBox(height: 18),
+               _SectionHeader(title: 'Offres du jour', actionLabel: 'Voir tout'),
+               const SizedBox(height: 18),
               LayoutBuilder(
                 builder: (context, constraints) {
                   final itemWidth = constraints.maxWidth >= 900
@@ -259,17 +266,17 @@ class _HomePageState extends State<HomePage> {
                             vertical: 14,
                           ),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF161D31),
+                            color: Colors.white,
                             borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: Colors.white12, width: 1),
+                            border: Border.all(color: Colors.grey.shade200, width: 1),
                           ),
                           child: Text(
                             trend,
-                            style: const TextStyle(
-                              color: Colors.white70,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                            ),
+                           style: const TextStyle(
+                             color: Colors.black54,
+                             fontSize: 13,
+                             fontWeight: FontWeight.w600,
+                           ),
                           ),
                         );
                       },
@@ -289,24 +296,24 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 24),
               const _BestBrandsPromoCard(),
               const SizedBox(height: 40),
-              const Text(
-                'Mode et bien etre',
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+               const Text(
+                 'Mode et bien etre',
+                 style: TextStyle(
+                   color: Colors.black87,
+                   fontSize: 14,
+                   fontWeight: FontWeight.w600,
+                 ),
+               ),
               const SizedBox(height: 12),
               ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                child: Container(
-                  height: 340,
-                  padding: EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: Color(0xFF161D31),
-                  ),
+               child: Container(
+                 height: 340,
+                 padding: EdgeInsets.all(12),
+                 decoration: BoxDecoration(
+                   borderRadius: BorderRadius.circular(16),
+                   color: Colors.grey.shade100,
+                 ),
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
@@ -359,10 +366,11 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 40),
-              const OccasionSection(),
-
-
+                    const SizedBox(height: 40),
+                    const OccasionSection(),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -528,7 +536,7 @@ class _SectionHeader extends StatelessWidget {
         Text(
           title,
           style: const TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontSize: 18,
             fontWeight: FontWeight.w700,
           ),
@@ -595,30 +603,30 @@ class _PagedOffersGridState extends State<_PagedOffersGrid> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Titre de la section
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Offres spéciales',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              Text(
-                'Voir tout →',
-                style: TextStyle(
-                  color: Color(0xFFF95F00),
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-        ),
+         const Padding(
+           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+           child: Row(
+             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+             children: [
+               Text(
+                 'Offres spéciales',
+                 style: TextStyle(
+                   color: Colors.black,
+                   fontSize: 18,
+                   fontWeight: FontWeight.w700,
+                 ),
+               ),
+               Text(
+                 'Voir tout →',
+                 style: TextStyle(
+                   color: Color(0xFFF95F00),
+                   fontSize: 13,
+                   fontWeight: FontWeight.w600,
+                 ),
+               ),
+             ],
+           ),
+         ),
 
         // PageView pour le scroll horizontal page par page
         SizedBox(
@@ -665,12 +673,12 @@ class _PagedOffersGridState extends State<_PagedOffersGrid> {
                   width: _currentPage == index ? 20 : 8,
                   height: 8,
                   margin: const EdgeInsets.symmetric(horizontal: 4),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    color: _currentPage == index
-                        ? const Color(0xFFF95F00)
-                        : Colors.white24,
-                  ),
+                    decoration: BoxDecoration(
+                     borderRadius: BorderRadius.circular(4),
+                     color: _currentPage == index
+                         ? const Color(0xFFF95F00)
+                         : Colors.grey.shade300,
+                   ),
                 );
               }),
             ),
@@ -806,10 +814,10 @@ class _QuickAccessSectionState extends State<_QuickAccessSection> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+           const Text(
             'Vos accès rapides',
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.black,
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),
@@ -934,16 +942,16 @@ class _PartnerOffersSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Offres partenaires',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
+       crossAxisAlignment: CrossAxisAlignment.start,
+       children: [
+         const Text(
+           'Offres partenaires',
+           style: TextStyle(
+             color: Colors.black,
+             fontSize: 18,
+             fontWeight: FontWeight.w700,
+           ),
+         ),
         const SizedBox(height: 16),
         // Offre 1
         ClipRRect(
@@ -953,7 +961,7 @@ class _PartnerOffersSection extends StatelessWidget {
             height: 200,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
-              color: const Color(0xFF161D31),
+              color: const Color(0xFFF5F5F5),
             ),
             child: Image.asset(
               'assets/images/Offre 1.png',
@@ -1077,7 +1085,83 @@ class _PartnerOffersSection extends StatelessWidget {
         const SizedBox(height: 16),
         // Offres 2 - Contenu scrollable
         const Text(
-          '',
+           '',
+           style: TextStyle(
+             color: Colors.black54,
+             fontSize: 14,
+             fontWeight: FontWeight.w600,
+           ),
+         ),
+         const SizedBox(height: 12),
+         ClipRRect(
+           borderRadius: BorderRadius.circular(16),
+           child: Container(
+             height: 340,
+             padding: const EdgeInsets.all(12),
+             decoration: BoxDecoration(
+               borderRadius: BorderRadius.circular(16),
+               color: Colors.grey.shade100,
+             ),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  _DealProductCard(
+                    title: 'Poêle anti-adhésive',
+                    brand: 'CookPro',
+                    price: '\$18',
+                    originalPrice: '525',
+                    discount: '-28%',
+                    rating: 5,
+                    reviews: 210,
+                    icon: Icons.kitchen,
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  _DealProductCard(
+                    title: 'Casque BT Ultra',
+                    brand: 'SoundPro',
+                    price: '\$44',
+                    originalPrice: '574',
+                    discount: '-40%',
+                    rating: 4,
+                    reviews: 312,
+                    icon: Icons.headphones,
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  _DealProductCard(
+                    title: 'Montre Connectée',
+                    brand: 'TechWear',
+                    price: '\$35',
+                    originalPrice: '89',
+                    discount: '-50%',
+                    rating: 5,
+                    reviews: 145,
+                    icon: Icons.watch,
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  _DealProductCard(
+                    title: 'Powerbank 20W',
+                    brand: 'ChargePro',
+                    price: '\$22',
+                    originalPrice: '59',
+                    discount: '-35%',
+                    rating: 4,
+                    reviews: 287,
+                    icon: Icons.power,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        const Text(
+          'Mon bien etre',
           style: TextStyle(
             color: Colors.white70,
             fontSize: 14,
@@ -1092,7 +1176,7 @@ class _PartnerOffersSection extends StatelessWidget {
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
-              color: const Color(0xFF161D31),
+              color: const Color(0xFFF5F5F5),
             ),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -1168,7 +1252,7 @@ class _PartnerOffersSection extends StatelessWidget {
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
-              color: const Color(0xFF161D31),
+              color: const Color(0xFFF5F5F5),
             ),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -1244,83 +1328,7 @@ class _PartnerOffersSection extends StatelessWidget {
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
-              color: const Color(0xFF161D31),
-            ),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  _DealProductCard(
-                    title: 'Poêle anti-adhésive',
-                    brand: 'CookPro',
-                    price: '\$18',
-                    originalPrice: '525',
-                    discount: '-28%',
-                    rating: 5,
-                    reviews: 210,
-                    icon: Icons.kitchen,
-                  ),
-
-                  const SizedBox(width: 12),
-
-                  _DealProductCard(
-                    title: 'Casque BT Ultra',
-                    brand: 'SoundPro',
-                    price: '\$44',
-                    originalPrice: '574',
-                    discount: '-40%',
-                    rating: 4,
-                    reviews: 312,
-                    icon: Icons.headphones,
-                  ),
-
-                  const SizedBox(width: 12),
-
-                  _DealProductCard(
-                    title: 'Montre Connectée',
-                    brand: 'TechWear',
-                    price: '\$35',
-                    originalPrice: '89',
-                    discount: '-50%',
-                    rating: 5,
-                    reviews: 145,
-                    icon: Icons.watch,
-                  ),
-
-                  const SizedBox(width: 12),
-
-                  _DealProductCard(
-                    title: 'Powerbank 20W',
-                    brand: 'ChargePro',
-                    price: '\$22',
-                    originalPrice: '59',
-                    discount: '-35%',
-                    rating: 4,
-                    reviews: 287,
-                    icon: Icons.power,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        const Text(
-          'Mon bien etre',
-          style: TextStyle(
-            color: Colors.white70,
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(height: 12),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(16),
-          child: Container(
-            height: 340,
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              color: const Color(0xFF161D31),
+              color: const Color(0xFFF5F5F5),
             ),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -1625,7 +1633,7 @@ class _ServiceChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       decoration: BoxDecoration(
-        color: const Color(0xFF161D31),
+        color: const Color(0xFFF5F5F5),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.white12, width: 0.5),
       ),
@@ -1709,7 +1717,7 @@ class _SuperMarketCategoryCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          color: const Color(0xFF161D31),
+          color: const Color(0xFFF5F5F5),
         ),
         child: Stack(
           fit: StackFit.expand,
@@ -1718,7 +1726,7 @@ class _SuperMarketCategoryCard extends StatelessWidget {
               imagePath,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) {
-                return Container(color: const Color(0xFF161D31));
+                return Container(color: const Color(0xFFF5F5F5));
               },
             ),
             Container(
@@ -1787,7 +1795,7 @@ class _SecondaryAccessChip extends StatelessWidget {
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) {
                 return Container(
-                  color: const Color(0xFF161D31),
+                  color: const Color(0xFFF5F5F5),
                   child: const Center(
                     child: Icon(Icons.image_not_supported, color: Colors.grey),
                   ),
@@ -1925,21 +1933,21 @@ class _BestBrandsPromoCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'DÉCOUVREZ LES MEILLEURES\nMARQUES',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w900,
-                    letterSpacing: 0.5,
-                    height: 1.3,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                const Text(
-                  'Des produits de qualité à prix réduits',
-                  style: TextStyle(color: Colors.white70, fontSize: 12),
-                ),
+                 const Text(
+                   'DÉCOUVREZ LES MEILLEURES\nMARQUES',
+                   style: TextStyle(
+                     color: Colors.black,
+                     fontSize: 16,
+                     fontWeight: FontWeight.w900,
+                     letterSpacing: 0.5,
+                     height: 1.3,
+                   ),
+                 ),
+                 const SizedBox(height: 12),
+                 const Text(
+                   'Des produits de qualité à prix réduits',
+                   style: TextStyle(color: Colors.black87, fontSize: 12),
+                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {},
@@ -2210,14 +2218,14 @@ class GoodDealsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          "Les bonnes affaires de la semaine",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
+         const Text(
+           "Les bonnes affaires de la semaine",
+           style: TextStyle(
+             color: Colors.black,
+             fontSize: 20,
+             fontWeight: FontWeight.w800,
+           ),
+         ),
         const SizedBox(height: 12),
         ClipRRect(
           borderRadius: BorderRadius.circular(16),
@@ -2409,19 +2417,19 @@ class OccasionSection extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: const [
-                Text(
-                  'Occasions',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  'Seconde main · Reconditionnés',
-                  style: TextStyle(color: Colors.white70, fontSize: 12),
-                ),
+               Text(
+                   'Occasions',
+                   style: TextStyle(
+                     color: Colors.black,
+                     fontSize: 18,
+                     fontWeight: FontWeight.w800,
+                   ),
+                 ),
+                 SizedBox(height: 4),
+                 Text(
+                   'Seconde main · Reconditionnés',
+                   style: TextStyle(color: Colors.black54, fontSize: 12),
+                 ),
               ],
             ),
             TextButton(
@@ -2683,7 +2691,7 @@ class _FilterChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: selected ? const Color(0xFFF95F00) : const Color(0xFF161D31),
+        color: selected ? const Color(0xFFF95F00) : const Color(0xFFF5F5F5),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: Colors.white12),
       ),
