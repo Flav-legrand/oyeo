@@ -125,9 +125,13 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ),
+
                         const SizedBox(width: 10),
                       ],
                     ),
+                    const SizedBox(height: 20),
+                    const OyeSearchBar(),
+                    const SizedBox(height: 24),
                   ],
                 ),
               ),
@@ -142,7 +146,7 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const OyeSearchBar(),
+
                     const SizedBox(height: 20),
 
 
