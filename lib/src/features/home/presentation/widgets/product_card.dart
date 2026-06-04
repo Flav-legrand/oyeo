@@ -31,7 +31,7 @@ class ProductCard extends StatelessWidget {
             color: const Color(0xFFF5F5F5),
             borderRadius: BorderRadius.circular(24),
             border: isCamera
-                ? Border.all(color: const Color(0xFFFFD166), width: 1.5)
+                ? Border.all(color: const Color(0xFFE0E0E0), width: 1.5)
                 : Border.all(color: const Color(0xFFE0E0E0), width: 1),
           ),
           padding: const EdgeInsets.all(16),

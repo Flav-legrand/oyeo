@@ -212,33 +212,34 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 28),
                _SectionHeader(title: 'Offres du jour', actionLabel: 'Voir tout'),
                const SizedBox(height: 18),
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  final itemWidth = constraints.maxWidth >= 900
-                      ? 220.0
-                      : constraints.maxWidth >= 600
-                      ? 190.0
-                      : 170.0;
-                  final itemHeight = constraints.maxWidth >= 600
-                      ? 280.0
-                      : 260.0;
-                  return SizedBox(
-                    height: itemHeight,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: HomeData.featuredProducts.length,
-                      separatorBuilder: (_, _) => const SizedBox(width: 14),
-                      itemBuilder: (context, index) {
-                        final item = HomeData.featuredProducts[index];
+                    LayoutBuilder(
+                      builder: (context, constraints) {
+                        // Utilisez les mêmes dimensions que _DealProductCard
+                        final itemWidth = 160.0; // Largeur fixe comme DealProductCard
+                        final itemHeight = 280.0; // Hauteur fixe comme DealProductCard
+
                         return SizedBox(
-                          width: itemWidth,
-                          child: ProductCard(product: item, compact: true),
+                          height: itemHeight,
+                          child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: HomeData.featuredProducts.length,
+                            separatorBuilder: (_, _) => const SizedBox(width: 14),
+                            itemBuilder: (context, index) {
+                              final item = HomeData.featuredProducts[index];
+                              return SizedBox(
+                                width: itemWidth,
+                                height: itemHeight, // Force la hauteur
+                                child: ProductCard(
+                                  product: item,
+                                  compact: true,
+                                  offer: false,
+                                ),
+                              );
+                            },
+                          ),
                         );
                       },
                     ),
-                  );
-                },
-              ),
               const SizedBox(height: 40),
               _SectionHeader(
                 title: 'Tendances du moment',
@@ -632,9 +633,8 @@ class _PagedOffersGridState extends State<_PagedOffersGrid> {
            ),
          ),
 
-        // PageView pour le scroll horizontal page par page
         SizedBox(
-          height: 480,
+          height: 670,
           child: PageView.builder(
             controller: _pageController,
             scrollDirection: Axis.horizontal,
@@ -649,14 +649,23 @@ class _PagedOffersGridState extends State<_PagedOffersGrid> {
                   crossAxisCount: 2,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
-                  childAspectRatio: 0.72,
+                  childAspectRatio: 160 / 280, // = 0.57
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   children: pageProducts.map((product) {
-                    return ProductCard(
-                      product: product,
-                      compact: true,
-                      offer: true,
+                    return Container(
+                      // 👇 Force les mêmes dimensions que _DealProductCard
+                      constraints: const BoxConstraints(
+                        minWidth: 160,
+                        maxWidth: 160,
+                        minHeight: 280,
+                        maxHeight: 280,
+                      ),
+                      child: ProductCard(
+                        product: product,
+                        compact: true,
+                        offer: true,
+                      ),
                     );
                   }).toList(),
                 ),
