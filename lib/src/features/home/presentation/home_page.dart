@@ -7,6 +7,9 @@ import 'widgets/oye_search_bar.dart';
 import 'widgets/product_card.dart';
 
 import 'package:test1/src/features/home/domain/product.dart';
+import 'package:test1/src/features/catalogues/pages/catalogue_page.dart';
+import 'package:test1/src/features/catalogues/pages/homme_page.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -33,10 +36,25 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Compte'),
         ],
         currentIndex: _selectedIndex,
-        onTap: (index) => setState(() => _selectedIndex = index),
+        onTap: (index) {
+          if (index == 1) {
+            // Navigation vers Catalogue
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const CataloguePage(),
+              ),
+            ).then((_) {
+              // Met à jour l'index après retour (optionnel)
+              setState(() {});
+            });
+          } else {
+            setState(() => _selectedIndex = index);
+          }
+        },
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Color(0xFFFFFFFF),
-        selectedItemColor: Color(0xFFF95F00),
+        backgroundColor: Colors.white,
+        selectedItemColor: const Color(0xFFF95F00),
         unselectedItemColor: Colors.grey,
         showUnselectedLabels: true,
       ),
@@ -131,7 +149,6 @@ class _HomePageState extends State<HomePage> {
                     ),
                     const SizedBox(height: 20),
                     const OyeSearchBar(),
-                    const SizedBox(height: 24),
                   ],
                 ),
               ),
