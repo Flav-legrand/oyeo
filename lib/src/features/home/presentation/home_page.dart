@@ -8,7 +8,7 @@ import 'widgets/product_card.dart';
 
 import 'package:test1/src/features/home/domain/product.dart';
 import 'package:test1/src/features/catalogues/pages/catalogue_page.dart';
-import 'package:test1/src/features/catalogues/pages/homme_page.dart';
+import 'package:test1/src/features/catalogues/pages/compte_page.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -37,20 +37,24 @@ class _HomePageState extends State<HomePage> {
         ],
         currentIndex: _selectedIndex,
         onTap: (index) {
-          if (index == 1) {
-            // Navigation vers Catalogue
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const CataloguePage(),
-              ),
-            ).then((_) {
-              // Met à jour l'index après retour (optionnel)
-              setState(() {});
-            });
-          } else {
-            setState(() => _selectedIndex = index);
-          }
+            if (index == 1) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CataloguePage()),
+              ).then((_) {
+                setState(() {});
+              });
+            } else if (index == 4) {  // Index 4 = Compte
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ComptePage()),
+              ).then((_) {
+                setState(() {});
+              });
+            } else {
+              setState(() => _selectedIndex = index);
+            }
+
         },
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.white,
