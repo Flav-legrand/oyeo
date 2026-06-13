@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:test1/src/features/catalogues/pages/homme_page.dart';
 
@@ -23,10 +22,7 @@ class CataloguePage extends StatelessWidget {
         ),
         backgroundColor: bgColor,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
+        automaticallyImplyLeading: false, // Supprime la flèche de retour
         centerTitle: true,
       ),
       body: SingleChildScrollView(

@@ -21,10 +21,7 @@ class ComptePage extends StatelessWidget {
         ),
         backgroundColor: bgColor,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
+        automaticallyImplyLeading: false, // Supprime la flèche de retour
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -313,38 +310,8 @@ class ComptePage extends StatelessWidget {
             ),
 
             const SizedBox(height: 30),
-
-
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildBottomNavItem(IconData icon, String label, BuildContext context, {bool isSelected = false}) {
-    return GestureDetector(
-      onTap: () {
-        if (label == 'Accueil') {
-          Navigator.pop(context);
-        }
-      },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            color: isSelected ? const Color(0xFFF95F00) : Colors.grey,
-            size: 22,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(
-              color: isSelected ? const Color(0xFFF95F00) : Colors.grey,
-              fontSize: 11,
-            ),
-          ),
-        ],
       ),
     );
   }

@@ -20,84 +20,50 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
-  // Fonction utilitaire pour la navigation avec transition de droite à gauche
-  void _navigateWithSlideTransition(Widget page) {
-    Navigator.push(
-      context,
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => page,
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          const begin = Offset(-1.0, 0.0); // Départ de la GAUCHE
-          const end = Offset.zero; // Arrivée au centre
-          const curve = Curves.easeInOut;
+  // Liste des pages (sans AppBar pour éviter les doublons)
+  final List<Widget> _pages = [
+    const HomeContent(),     // Accueil
+    const CataloguePage(),   // Catalogue
+    const PanierContent(),   // Panier (à créer)
+    const FavorisContent(),  // Favoris (à créer)
+    const ComptePage(),      // Compte
+  ];
 
-          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-          var offsetAnimation = animation.drive(tween);
-
-          return SlideTransition(
-            position: offsetAnimation,
-            child: child,
-          );
-        },
-        transitionDuration: const Duration(milliseconds: 300),
-      ),
-    ).then((_) {
-      setState(() {});
-    });
-  }
-
-  // Widget pour l'icône Menu stylée (Option 2 : Carte avec séparateur)
-  Widget _buildStyledMenuIcon({bool isSelected = false}) {
+  // Widget pour l'icône Menu + Recherche fusionnée
+  Widget _buildFusedMenuSearchIcon({bool isSelected = false}) {
     final color = isSelected ? const Color(0xFFF95F00) : Colors.grey;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      width: 32,
+      height: 32,
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        color: isSelected ? color.withOpacity(0.15) : Colors.transparent,
+        borderRadius: BorderRadius.circular(8),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
+      child: Stack(
+        alignment: Alignment.center,
         children: [
-          // Icône Menu
-          Container(
-            padding: const EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(
-              Icons.menu,
-              size: 18,
-              color: color,
-            ),
+          // Icône Menu (3 lignes horizontales)
+          Icon(
+            Icons.menu,
+            size: 20,
+            color: color,
           ),
-          const SizedBox(width: 8),
-          // Séparateur vertical
-          Container(
-            width: 1,
-            height: 20,
-            color: Colors.grey.shade300,
-          ),
-          const SizedBox(width: 8),
-          // Icône Recherche
-          Container(
-            padding: const EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(
-              Icons.search,
-              size: 18,
-              color: color,
+          // Petite loupe de recherche fusionnée
+          Positioned(
+            right: 2,
+            bottom: 2,
+            child: Container(
+              padding: const EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                color: isSelected ? color : Colors.grey.shade400,
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Icon(
+                Icons.search,
+                size: 10,
+                color: Colors.white,
+              ),
             ),
           ),
         ],
@@ -108,14 +74,14 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xFFFFFFFF),
+      body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: [
           const BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'Accueil'),
           BottomNavigationBarItem(
-              icon: _buildStyledMenuIcon(isSelected: _selectedIndex == 1),
-              label: 'Catalogue'
+            icon: _buildFusedMenuSearchIcon(isSelected: _selectedIndex == 1),
+            label: 'Catalogue',
           ),
           const BottomNavigationBarItem(icon: Icon(Icons.shopping_bag_outlined), label: 'Panier'),
           const BottomNavigationBarItem(icon: Icon(Icons.favorite_border), label: 'Favoris'),
@@ -123,13 +89,9 @@ class _HomePageState extends State<HomePage> {
         ],
         currentIndex: _selectedIndex,
         onTap: (index) {
-          if (index == 1) {
-            _navigateWithSlideTransition(const CataloguePage());
-          } else if (index == 4) {
-            _navigateWithSlideTransition(const ComptePage());
-          } else {
-            setState(() => _selectedIndex = index);
-          }
+          setState(() {
+            _selectedIndex = index;
+          });
         },
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.white,
@@ -137,343 +99,385 @@ class _HomePageState extends State<HomePage> {
         unselectedItemColor: Colors.grey,
         showUnselectedLabels: true,
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              // Section sombre - Header (scrollable)
-              Container(
-                width: double.infinity,
-                color: const Color(0xFF1A2A3A),
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 52,
-                          height: 52,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFF95F00),
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              'O',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
+    );
+  }
+}
+
+// ============================================================
+// CONTENU DE LA PAGE ACCUEIL (TOUT LE SCROLL)
+// ============================================================
+class HomeContent extends StatelessWidget {
+  const HomeContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Section sombre - Header (scrollable)
+            Container(
+              width: double.infinity,
+              color: const Color(0xFF1A2A3A),
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 52,
+                        height: 52,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF95F00),
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'O',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
                           ),
                         ),
-                        const SizedBox(width: 14),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                'Oyéo',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              SizedBox(height: 6),
-                              Text(
-                                'Utilisateur',
-                                style: TextStyle(
-                                  color: Colors.white54,
-                                  fontSize: 13,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Row(
+                      ),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: const [
-                            Icon(Icons.notifications_none, color: Colors.white, size: 22),
-                            SizedBox(width: 12),
-                            Icon(Icons.favorite_border, color: Colors.white, size: 22),
+                            Text(
+                              'Oyéo',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            SizedBox(height: 6),
+                            Text(
+                              'Utilisateur',
+                              style: TextStyle(
+                                color: Colors.white54,
+                                fontSize: 13,
+                              ),
+                            ),
                           ],
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      children: [
-                        const Icon(Icons.location_on_outlined, size: 16, color: Colors.white70),
-                        const SizedBox(width: 6),
-                        const Text(
-                          'Brazzaville',
-                          style: TextStyle(color: Colors.white70, fontSize: 12),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            'Livrer à : Bacongo',
-                            style: const TextStyle(
-                              color: Color.fromRGBO(255, 255, 255, 0.8),
-                              fontSize: 13,
-                            ),
+                      ),
+                      Row(
+                        children: const [
+                          Icon(Icons.notifications_none, color: Colors.white, size: 22),
+                          SizedBox(width: 12),
+                          Icon(Icons.favorite_border, color: Colors.white, size: 22),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      const Icon(Icons.location_on_outlined, size: 16, color: Colors.white70),
+                      const SizedBox(width: 6),
+                      const Text(
+                        'Brazzaville',
+                        style: TextStyle(color: Colors.white70, fontSize: 12),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          'Livrer à : Bacongo',
+                          style: const TextStyle(
+                            color: Color.fromRGBO(255, 255, 255, 0.8),
+                            fontSize: 13,
                           ),
                         ),
-                        const SizedBox(width: 10),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    const OyeSearchBar(),
-                  ],
-                ),
+                      ),
+                      const SizedBox(width: 10),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  const OyeSearchBar(),
+                ],
               ),
-              // Section blanche - Contenu scrollable
-              Padding(
-                padding: EdgeInsets.fromLTRB(
-                  16,
-                  20,
-                  16,
-                  20 + MediaQuery.of(context).viewInsets.bottom,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 20),
-                    LayoutBuilder(
-                      builder: (context, constraints) {
-                        final itemWidth = constraints.maxWidth / 3;
-                        return Row(
-                          children: HomeData.tags.map((tag) {
+            ),
+            // Section blanche - Contenu scrollable
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 20),
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      final itemWidth = constraints.maxWidth / 3;
+                      return Row(
+                        children: HomeData.tags.map((tag) {
+                          return SizedBox(
+                            width: itemWidth,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 4),
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 10,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(18),
+                                border: Border.all(color: const Color(0xFFE0E0E0), width: 1),
+                              ),
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(
+                                  tag,
+                                  textAlign: TextAlign.center,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(color: Colors.black),
+                                ),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 24),
+                  const Text(
+                    categoriesTitle,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  CategoryList(categories: HomeData.categories),
+                  const SizedBox(height: 24),
+                  _PromoCard(),
+                  const SizedBox(height: 16),
+                  Center(
+                    child: Container(
+                      width: 42,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: Colors.white12,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 28),
+                  _SectionHeader(title: 'Offres du jour', actionLabel: 'Voir tout'),
+                  const SizedBox(height: 18),
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      final itemWidth = 160.0;
+                      final itemHeight = 280.0;
+
+                      return SizedBox(
+                        height: itemHeight,
+                        child: ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: HomeData.featuredProducts.length,
+                          separatorBuilder: (_, _) => const SizedBox(width: 14),
+                          itemBuilder: (context, index) {
+                            final item = HomeData.featuredProducts[index];
                             return SizedBox(
                               width: itemWidth,
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 4),
-                                alignment: Alignment.center,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 10,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(18),
-                                  border: Border.all(color: const Color(0xFFE0E0E0), width: 1),
-                                ),
-                                child: FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  child: Text(
-                                    tag,
-                                    textAlign: TextAlign.center,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(color: Colors.black),
-                                  ),
+                              height: itemHeight,
+                              child: ProductCard(
+                                product: item,
+                                compact: true,
+                                offer: false,
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 40),
+                  _SectionHeader(
+                    title: 'Tendances du moment',
+                    actionLabel: 'Voir tout',
+                  ),
+                  const SizedBox(height: 16),
+                  Builder(
+                    builder: (context) {
+                      final trends = [
+                        'Lego',
+                        'Bon plan',
+                        'High-Tech',
+                        'Vêtements',
+                        'Maison',
+                        'Beauté',
+                      ];
+                      return SizedBox(
+                        height: 58,
+                        child: ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          itemCount: trends.length,
+                          separatorBuilder: (_, _) => const SizedBox(width: 10),
+                          itemBuilder: (context, index) {
+                            final trend = trends[index];
+                            return Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 18,
+                                vertical: 14,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: Colors.grey.shade200, width: 1),
+                              ),
+                              child: Text(
+                                trend,
+                                style: const TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             );
-                          }).toList(),
-                        );
-                      },
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  _PagedOffersGrid(),
+                  const SizedBox(height: 40),
+                  const SizedBox(height: 20),
+                  _QuickAccessSection(),
+                  const SizedBox(height: 40),
+                  _PartnerOffersSection(),
+                  const SizedBox(height: 40),
+                  const GoodDealsSection(),
+                  const SizedBox(height: 24),
+                  const _BestBrandsPromoCard(),
+                  const SizedBox(height: 40),
+                  const Text(
+                    'Mode et bien etre',
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
                     ),
-                    const SizedBox(height: 24),
-                    const Text(
-                      categoriesTitle,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
+                  ),
+                  const SizedBox(height: 12),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Container(
+                      height: 340,
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: Colors.grey.shade100,
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    CategoryList(categories: HomeData.categories),
-                    const SizedBox(height: 24),
-                    _PromoCard(),
-                    const SizedBox(height: 16),
-                    Center(
-                      child: Container(
-                        width: 42,
-                        height: 6,
-                        decoration: BoxDecoration(
-                          color: Colors.white12,
-                          borderRadius: BorderRadius.circular(12),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            _DealProductCard(
+                              title: 'Poêle anti-adhésive',
+                              brand: 'CookPro',
+                              price: '\$18',
+                              originalPrice: '525',
+                              discount: '-28%',
+                              rating: 5,
+                              reviews: 210,
+                              icon: Icons.kitchen,
+                            ),
+                            const SizedBox(width: 12),
+                            _DealProductCard(
+                              title: 'Casque BT Ultra',
+                              brand: 'SoundPro',
+                              price: '\$44',
+                              originalPrice: '574',
+                              discount: '-40%',
+                              rating: 4,
+                              reviews: 312,
+                              icon: Icons.headphones,
+                            ),
+                            const SizedBox(width: 12),
+                            _DealProductCard(
+                              title: 'Montre Connectée',
+                              brand: 'TechWear',
+                              price: '\$35',
+                              originalPrice: '89',
+                              discount: '-50%',
+                              rating: 5,
+                              reviews: 145,
+                              icon: Icons.watch,
+                            ),
+                            const SizedBox(width: 12),
+                            _DealProductCard(
+                              title: 'Powerbank 20W',
+                              brand: 'ChargePro',
+                              price: '\$22',
+                              originalPrice: '59',
+                              discount: '-35%',
+                              rating: 4,
+                              reviews: 287,
+                              icon: Icons.power,
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    const SizedBox(height: 28),
-                    _SectionHeader(title: 'Offres du jour', actionLabel: 'Voir tout'),
-                    const SizedBox(height: 18),
-                    LayoutBuilder(
-                      builder: (context, constraints) {
-                        final itemWidth = 160.0;
-                        final itemHeight = 280.0;
-
-                        return SizedBox(
-                          height: itemHeight,
-                          child: ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: HomeData.featuredProducts.length,
-                            separatorBuilder: (_, _) => const SizedBox(width: 14),
-                            itemBuilder: (context, index) {
-                              final item = HomeData.featuredProducts[index];
-                              return SizedBox(
-                                width: itemWidth,
-                                height: itemHeight,
-                                child: ProductCard(
-                                  product: item,
-                                  compact: true,
-                                  offer: false,
-                                ),
-                              );
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 40),
-                    _SectionHeader(
-                      title: 'Tendances du moment',
-                      actionLabel: 'Voir tout',
-                    ),
-                    const SizedBox(height: 16),
-                    Builder(
-                      builder: (context) {
-                        final trends = [
-                          'Lego',
-                          'Bon plan',
-                          'High-Tech',
-                          'Vêtements',
-                          'Maison',
-                          'Beauté',
-                        ];
-                        return SizedBox(
-                          height: 58,
-                          child: ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            itemCount: trends.length,
-                            separatorBuilder: (_, _) => const SizedBox(width: 10),
-                            itemBuilder: (context, index) {
-                              final trend = trends[index];
-                              return Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 18,
-                                  vertical: 14,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(color: Colors.grey.shade200, width: 1),
-                                ),
-                                child: Text(
-                                  trend,
-                                  style: const TextStyle(
-                                    color: Colors.black54,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 20),
-                    _PagedOffersGrid(),
-                    const SizedBox(height: 40),
-                    const SizedBox(height: 20),
-                    _QuickAccessSection(),
-                    const SizedBox(height: 40),
-                    _PartnerOffersSection(),
-                    const SizedBox(height: 40),
-                    const GoodDealsSection(),
-                    const SizedBox(height: 24),
-                    const _BestBrandsPromoCard(),
-                    const SizedBox(height: 40),
-                    const Text(
-                      'Mode et bien etre',
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: Container(
-                        height: 340,
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          color: Colors.grey.shade100,
-                        ),
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              _DealProductCard(
-                                title: 'Poêle anti-adhésive',
-                                brand: 'CookPro',
-                                price: '\$18',
-                                originalPrice: '525',
-                                discount: '-28%',
-                                rating: 5,
-                                reviews: 210,
-                                icon: Icons.kitchen,
-                              ),
-                              const SizedBox(width: 12),
-                              _DealProductCard(
-                                title: 'Casque BT Ultra',
-                                brand: 'SoundPro',
-                                price: '\$44',
-                                originalPrice: '574',
-                                discount: '-40%',
-                                rating: 4,
-                                reviews: 312,
-                                icon: Icons.headphones,
-                              ),
-                              const SizedBox(width: 12),
-                              _DealProductCard(
-                                title: 'Montre Connectée',
-                                brand: 'TechWear',
-                                price: '\$35',
-                                originalPrice: '89',
-                                discount: '-50%',
-                                rating: 5,
-                                reviews: 145,
-                                icon: Icons.watch,
-                              ),
-                              const SizedBox(width: 12),
-                              _DealProductCard(
-                                title: 'Powerbank 20W',
-                                brand: 'ChargePro',
-                                price: '\$22',
-                                originalPrice: '59',
-                                discount: '-35%',
-                                rating: 4,
-                                reviews: 287,
-                                icon: Icons.power,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-                    const OccasionSection(),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 40),
+                  const OccasionSection(),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
+
+// ============================================================
+// PAGES TEMPORAIRES POUR PANIER ET FAVORIS
+// ============================================================
+
+class PanierContent extends StatelessWidget {
+  const PanierContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text(
+        'Page Panier',
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+}
+
+class FavorisContent extends StatelessWidget {
+  const FavorisContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text(
+        'Page Favoris',
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+}
+
+// ============================================================
+// TOUS LES AUTRES WIDGETS RESTENT IDENTIQUES
+// ============================================================
 
 class _ActionIcon extends StatelessWidget {
   final IconData icon;
@@ -661,7 +665,6 @@ class _PagedOffersGridState extends State<_PagedOffersGrid> {
     super.initState();
     _pageController = PageController();
 
-    // Grouper les produits par lots de 4 (2x2)
     _pages = [];
     for (int i = 0; i < HomeData.offersProducts.length; i += 4) {
       final end = i + 4;
@@ -674,7 +677,6 @@ class _PagedOffersGridState extends State<_PagedOffersGrid> {
       }
     }
 
-    // Écouter les changements de page
     _pageController.addListener(() {
       final newPage = _pageController.page?.round() ?? 0;
       if (newPage != _currentPage) {
@@ -698,7 +700,6 @@ class _PagedOffersGridState extends State<_PagedOffersGrid> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Titre de la section
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Row(
@@ -762,7 +763,6 @@ class _PagedOffersGridState extends State<_PagedOffersGrid> {
             },
           ),
         ),
-        // Indicateur de page (dots)
         if (_pages.length > 1)
           Container(
             margin: const EdgeInsets.only(top: 16),
@@ -797,7 +797,7 @@ class _QuickAccessSection extends StatefulWidget {
 }
 
 class _QuickAccessSectionState extends State<_QuickAccessSection> {
-  int _selectedIndex = 1; // Catégories est sélectionné par défaut
+  int _selectedIndex = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -807,7 +807,6 @@ class _QuickAccessSectionState extends State<_QuickAccessSection> {
       ('Service', Icons.storefront_outlined),
     ];
 
-    // Liste des services (utilise _ServiceItem et _ServiceChip)
     final serviceItems = [
       _ServiceItem(label: 'Ménage', icon: Icons.cleaning_services),
       _ServiceItem(label: 'Plomberie', icon: Icons.plumbing),
@@ -817,10 +816,8 @@ class _QuickAccessSectionState extends State<_QuickAccessSection> {
       _ServiceItem(label: 'Informatique', icon: Icons.computer),
     ];
 
-    // Items différents selon la sélection
     final itemsByCategory = {
       0: [
-        // AntiGaspi
         _SecondaryAccessItem(
           label: 'Lot fruits & légumes',
           imagePath: 'assets/images/Antigaspi.png',
@@ -855,7 +852,6 @@ class _QuickAccessSectionState extends State<_QuickAccessSection> {
         ),
       ],
       1: [
-        // Supermarché
         _SecondaryAccessItem(
           label: 'Salon',
           imagePath: 'assets/images/vos acces rapide.png',
@@ -874,7 +870,6 @@ class _QuickAccessSectionState extends State<_QuickAccessSection> {
         ),
       ],
       2: [
-        // Services
         _SecondaryAccessItem(
           label: 'Ménage',
           imagePath: 'assets/images/Service.png',
@@ -924,7 +919,6 @@ class _QuickAccessSectionState extends State<_QuickAccessSection> {
             ),
           ),
           const SizedBox(height: 16),
-          // Primary chips row
           Row(
             children: List.generate(primaryItems.length, (index) {
               final (label, icon) = primaryItems[index];
@@ -942,7 +936,6 @@ class _QuickAccessSectionState extends State<_QuickAccessSection> {
             }),
           ),
           const SizedBox(height: 12),
-          // Super Marché: grille de catégories + bouton d'action
           if (_selectedIndex == 1) ...[
             GridView.count(
               crossAxisCount: 3,
@@ -996,7 +989,6 @@ class _QuickAccessSectionState extends State<_QuickAccessSection> {
               ),
             ),
           ] else if (_selectedIndex == 2) ...[
-            // Afficher les services en grille 3 colonnes (comme l'image)
             GridView.count(
               crossAxisCount: 3,
               crossAxisSpacing: 12,
@@ -1054,7 +1046,6 @@ class _PartnerOffersSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        // Offre 1
         ClipRRect(
           borderRadius: BorderRadius.circular(16),
           child: Container(
@@ -1068,7 +1059,6 @@ class _PartnerOffersSection extends StatelessWidget {
               'assets/images/Offre 1.png',
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) {
-                // Fallback : afficher un placeholder attrayant
                 return Container(
                   width: double.infinity,
                   height: 200,
@@ -1184,16 +1174,6 @@ class _PartnerOffersSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        // Offres 2 - Contenu scrollable
-        const Text(
-          '',
-          style: TextStyle(
-            color: Colors.black54,
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(height: 12),
         ClipRRect(
           borderRadius: BorderRadius.circular(16),
           child: Container(
@@ -1295,7 +1275,6 @@ class _DealProductCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Header: Deal badge + Heart
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -1321,7 +1300,6 @@ class _DealProductCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 8),
-            // Product icon
             Container(
               width: 100,
               height: 80,
@@ -1332,7 +1310,6 @@ class _DealProductCard extends StatelessWidget {
               child: Icon(icon, color: Colors.grey[400], size: 40),
             ),
             const SizedBox(height: 8),
-            // Discount badge
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
               decoration: BoxDecoration(
@@ -1349,12 +1326,10 @@ class _DealProductCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 6),
-            // Brand
             Text(
               brand,
               style: TextStyle(color: Colors.grey[600], fontSize: 11),
             ),
-            // Title
             Text(
               title,
               style: const TextStyle(
@@ -1366,7 +1341,6 @@ class _DealProductCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 4),
-            // Rating
             Row(
               children: [
                 Row(
@@ -1387,7 +1361,6 @@ class _DealProductCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 6),
-            // Price
             Row(
               children: [
                 Text(
@@ -1410,7 +1383,6 @@ class _DealProductCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 8),
-            // Action buttons
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -1653,7 +1625,6 @@ class _SecondaryAccessChip extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            // Image de fond
             Image.asset(
               imagePath,
               fit: BoxFit.cover,
@@ -1666,7 +1637,6 @@ class _SecondaryAccessChip extends StatelessWidget {
                 );
               },
             ),
-            // Badge de réduction (haut gauche)
             if (discount != null)
               Positioned(
                 top: 8,
@@ -1690,7 +1660,6 @@ class _SecondaryAccessChip extends StatelessWidget {
                   ),
                 ),
               ),
-            // Overlay avec les informations (bas)
             Positioned(
               bottom: 0,
               left: 0,
@@ -1711,7 +1680,6 @@ class _SecondaryAccessChip extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // "Plus que X" avec horloge
                     if (timeLabel != null)
                       Row(
                         children: [
@@ -1732,7 +1700,6 @@ class _SecondaryAccessChip extends StatelessWidget {
                         ],
                       ),
                     const SizedBox(height: 4),
-                    // Titre du produit
                     Text(
                       label,
                       style: const TextStyle(
@@ -1743,7 +1710,6 @@ class _SecondaryAccessChip extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    // Prix
                     if (price != null)
                       Row(
                         children: [
@@ -1865,7 +1831,6 @@ class GoodDealsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // On prend 4 produits pour la grille (2x2)
     final deals = HomeData.offersProducts.take(4).toList();
 
     return Column(
@@ -1919,7 +1884,6 @@ class _GoodDealCard extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            // Image produit (si disponible)
             if (product.imageAsset.isNotEmpty)
               Image.asset(
                 product.imageAsset,
@@ -1930,7 +1894,6 @@ class _GoodDealCard extends StatelessWidget {
               )
             else
               Container(color: const Color(0xFF1A2230)),
-            // Overlay dégradé bas
             Positioned(
               bottom: 0,
               left: 0,
@@ -1946,7 +1909,6 @@ class _GoodDealCard extends StatelessWidget {
                 ),
               ),
             ),
-            // Badge "En ligne" en haut à gauche
             Positioned(
               top: 10,
               left: 10,
@@ -1966,7 +1928,6 @@ class _GoodDealCard extends StatelessWidget {
                 ),
               ),
             ),
-            // Badge de remise (si présente)
             if (product.discount != null)
               Positioned(
                 top: 10,
@@ -1987,7 +1948,6 @@ class _GoodDealCard extends StatelessWidget {
                   ),
                 ),
               ),
-            // Texte bas : titre, état et prix
             Positioned(
               left: 10,
               right: 10,
@@ -1995,7 +1955,6 @@ class _GoodDealCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Small category / état
                   Text(
                     product.category,
                     style: const TextStyle(
@@ -2006,7 +1965,6 @@ class _GoodDealCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 6),
-                  // Nom / titre
                   Text(
                     product.name,
                     style: const TextStyle(
@@ -2018,7 +1976,6 @@ class _GoodDealCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 6),
-                  // Prix (mise en avant)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -2030,7 +1987,6 @@ class _GoodDealCard extends StatelessWidget {
                           fontSize: 16,
                         ),
                       ),
-                      // petit badge "Voir" ou icone
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                         decoration: BoxDecoration(
@@ -2056,14 +2012,11 @@ class OccasionSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Utilisez HomeData.secondHandProducts si vous l'avez ajouté,
-    // sinon basculez sur une autre source, ex: HomeData.featuredProducts.take(2)
     final items = HomeData.secondHandProducts;
     if (items.isEmpty) return const SizedBox.shrink();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Header: titre + "Voir tout"
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -2095,7 +2048,6 @@ class OccasionSection extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 12),
-        // Filtre chips (Tous, Comme neuf, Bon état, Reconditionné)
         SizedBox(
           height: 40,
           child: ListView(
@@ -2112,7 +2064,6 @@ class OccasionSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
-        // Liste horizontale de cartes
         GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -2148,7 +2099,6 @@ class _OccasionGridCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Partie image (prend 60% de la hauteur)
           Expanded(
             flex: 3,
             child: Stack(
@@ -2175,7 +2125,6 @@ class _OccasionGridCard extends StatelessWidget {
                     },
                   ),
                 ),
-                // Badge "Occasion" en haut à gauche
                 Positioned(
                   top: 8,
                   left: 8,
@@ -2198,7 +2147,6 @@ class _OccasionGridCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                // Badge note (si disponible)
                 if (product.rating != null)
                   Positioned(
                     bottom: 8,
@@ -2235,7 +2183,6 @@ class _OccasionGridCard extends StatelessWidget {
               ],
             ),
           ),
-          // Partie informations (prend 40% de la hauteur)
           Expanded(
             flex: 2,
             child: Padding(
@@ -2244,7 +2191,6 @@ class _OccasionGridCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Nom et catégorie
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -2282,7 +2228,6 @@ class _OccasionGridCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  // Prix et bouton
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
