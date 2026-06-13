@@ -5,8 +5,8 @@ class ComptePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const bgColor = Color(0xFFF5F5F5);  // Même couleur que le catalogue
-    const accentColor = Color(0xFFF95F00); // Orange OYÉO
+    const bgColor = Color(0xFFF5F5F5);
+    const accentColor = Color(0xFFF95F00);
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -32,112 +32,319 @@ class ComptePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Titre Compte (comme MODE dans catalogue)
+            // Titre "Déjà client ?"
             const Text(
-              'Compte',
+              'Déjà client ?',
               style: TextStyle(
-                fontSize: 22,
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
-                letterSpacing: 1,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 8),
+            // Astérisque champ obligatoire
+            const Text(
+              '* champ obligatoire',
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 30),
 
-            // Groupe de cartes (style identique au catalogue)
-            Column(
+            // Formulaire
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: Colors.grey.shade200),
+              ),
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Titre "Votre adresse email*"
+                  const Text(
+                    'Votre adresse email*',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  // Champ email avec exemple
+                  TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Exemple: angedurand@exemple.com',
+                      hintStyle: TextStyle(color: Colors.grey.shade400),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: Colors.grey.shade300),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: Colors.grey.shade300),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: Color(0xFFF95F00)),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Titre "Votre mot de passe*"
+                  const Text(
+                    'Votre mot de passe*',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  // Champ mot de passe
+                  TextField(
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      hintText: 'Entrez votre mot de passe',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: Colors.grey.shade300),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: Colors.grey.shade300),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: Color(0xFFF95F00)),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Bouton "Me connecter"
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Action de connexion
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: accentColor,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text(
+                        'Me connecter',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Lien "Mot de passe oublié"
+                  Center(
+                    child: TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'Mot de passe oublié',
+                        style: TextStyle(
+                          color: Color(0xFFF95F00),
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            // Séparateur avec texte "Ou connectez-vous à partir de votre réseau social"
+            Row(
               children: [
-                // Espace Client
-                _buildNavItem(
-                  title: 'Espace Client',
-                  subtitle: 'Profil • Adresses',
-                  icon: Icons.person,
-                  onTap: () {},
+                Expanded(child: Divider(color: Colors.grey.shade300)),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    'Ou connectez-vous à partir de votre réseau social',
+                    style: TextStyle(
+                      color: Colors.grey.shade600,
+                      fontSize: 12,
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 12),
+                Expanded(child: Divider(color: Colors.grey.shade300)),
+              ],
+            ),
 
-                // Vos Commandes
-                _buildNavItem(
-                  title: 'Vos Commandes',
-                  subtitle: 'Suivi • Retours',
-                  icon: Icons.shopping_bag,
-                  onTap: () {},
+            const SizedBox(height: 24),
+
+            // Ligne unique avec les 4 icônes : Google, Facebook, Apple, PayPal
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // Google
+                Container(
+                  width: 55,
+                  height: 55,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.grey.shade300),
+                  ),
+                  child: IconButton(
+                    onPressed: () {},
+                    padding: EdgeInsets.zero,
+                    icon: Container(
+                      width: 30,
+                      height: 30,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(0xFFDB4437),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'G',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 12),
-
-                // Favoris
-                _buildNavItem(
-                  title: 'Favoris',
-                  subtitle: 'Produits & Prestataires',
-                  icon: Icons.favorite,
-                  onTap: () {},
+                // Facebook
+                Container(
+                  width: 55,
+                  height: 55,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.grey.shade300),
+                  ),
+                  child: IconButton(
+                    onPressed: () {},
+                    padding: EdgeInsets.zero,
+                    icon: const Icon(Icons.facebook, color: Color(0xFF1877F2), size: 30),
+                  ),
                 ),
-                const SizedBox(height: 12),
-
-                // Support
-                _buildNavItem(
-                  title: 'Support',
-                  subtitle: 'Aide • Chat',
-                  icon: Icons.support_agent,
-                  onTap: () {},
+                // Apple
+                Container(
+                  width: 55,
+                  height: 55,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.grey.shade300),
+                  ),
+                  child: IconButton(
+                    onPressed: () {},
+                    padding: EdgeInsets.zero,
+                    icon: const Icon(Icons.apple, size: 30),
+                  ),
+                ),
+                // PayPal
+                Container(
+                  width: 55,
+                  height: 55,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.grey.shade300),
+                  ),
+                  child: IconButton(
+                    onPressed: () {},
+                    padding: EdgeInsets.zero,
+                    icon: const Icon(Icons.payment, color: Color(0xFF003087), size: 30),
+                  ),
                 ),
               ],
             ),
+
+            const SizedBox(height: 30),
+
+            // Ligne séparatrice
+            const Divider(color: Colors.grey),
+
+            const SizedBox(height: 20),
+
+            // Lien "Créer mon compte"
+            Center(
+              child: Column(
+                children: [
+                  const Text(
+                    'Créer mon compte',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFFF95F00),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  TextButton(
+                    onPressed: () {},
+                    child: const Text(
+                      'S\'inscrire',
+                      style: TextStyle(
+                        color: Color(0xFFF95F00),
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 30),
+
+
           ],
         ),
       ),
     );
   }
 
-  // Style identique aux cartes du catalogue
-  Widget _buildNavItem({
-    required String title,
-    required String subtitle,
-    required IconData icon,
-    required VoidCallback onTap,
-  }) {
-    const accentColor = Color(0xFFF95F00);
-
+  Widget _buildBottomNavItem(IconData icon, String label, BuildContext context, {bool isSelected = false}) {
     return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,  // Fond blanc comme les cartes catalogue
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.grey.shade200, width: 1),
-        ),
-        child: ListTile(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          leading: Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: accentColor.withOpacity(0.1),  // Orange transparent comme catalogue
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(
-              icon,
-              color: accentColor,  // Orange comme catalogue
-              size: 22,
-            ),
+      onTap: () {
+        if (label == 'Accueil') {
+          Navigator.pop(context);
+        }
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            color: isSelected ? const Color(0xFFF95F00) : Colors.grey,
+            size: 22,
           ),
-          title: Text(
-            title,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-              color: Colors.black87,
-            ),
-          ),
-          subtitle: Text(
-            subtitle,
+          const SizedBox(height: 4),
+          Text(
+            label,
             style: TextStyle(
-              color: Colors.grey.shade600,
-              fontSize: 12,
+              color: isSelected ? const Color(0xFFF95F00) : Colors.grey,
+              fontSize: 11,
             ),
           ),
-          trailing: Icon(Icons.chevron_right, color: Colors.grey.shade400),
-        ),
+        ],
       ),
     );
   }
